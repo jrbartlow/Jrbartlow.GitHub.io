@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Prime Number Research & GIMPS Contributions</title>
+    <!-- Tailwind CSS for modern, scannable, and clean layout -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- MathJax for rendering LaTeX mathematical expressions flawlessly -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/MathJax.js?config=TeX-mml-chtml"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-line { background: #888; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Header Section -->
+    <header class="bg-blue-900 text-white py-8 px-6 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold tracking-tight">Prime Research Portfolio</h1>
+                <p class="text-blue-200 mt-1 text-sm md:text-base">Tracking official GIMPS eliminations and custom $7^n - 2$ discoveries.</p>
+            </div>
+            <div class="flex gap-3 text-xs md:text-sm">
+                <a href="https://www.mersenne.org/" target="_blank" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition shadow-sm">GIMPS Official Site</a>
+                <a href="https://t5k.org/" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-md font-medium transition shadow-sm">The Prime Pages</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Workspace Dashboard -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- Interactive Controls Dashboard -->
+        <div class="bg-white rounded-xl p-4 mb-6 shadow-sm border border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="w-full sm:w-72">
+                <label for="search-input" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Global Exponent Search</label>
+                <input id="search-input" type="text" placeholder="Type a value or exponent..." onkeyup="filterLists()" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none transition">
+            </div>
+            <div class="text-xs text-gray-500 text-center sm:text-right">
+                <span class="font-medium text-gray-700">Pro-Tip:</span> Use Git to push changes to your <code class="bg-gray-100 px-1 py-0.5 rounded font-mono">index.html</code> template file.
+            </div>
+        </div>
+
+        <!-- 2-Column Responsive Matrix Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- LEFT COLUMN: Mersenne Primes (GIMPS) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Mersenne Prime Eliminations</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Form: $2^p - 1$ verified through PrimeNet benchmarks.</p>
+                    </div>
+                    <span id="mersenne-count" class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <!-- Scrollable Table Container -->
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent ($p$)</th>
+                                <th scope="col" class="px-6 py-3">Test Type</th>
+                                <th scope="col" class="px-6 py-3">Status / Factor Found</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mersenne-body">
+                            <!-- Placeholder Sample Data Row 1 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="103002457">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">103,002,457</td>
+                                <td class="px-6 py-4"><span class="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-0.5 rounded">Trial Factoring (TF)</span></td>
+                                <td class="px-6 py-4 text-xs font-mono">Cleared to $2^{69}$</td>
+                            </tr>
+                            <!-- Placeholder Sample Data Row 2 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="87201911">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">87,201,911</td>
+                                <td class="px-6 py-4"><span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded">P-1 Factor</span></td>
+                                <td class="px-6 py-4 text-xs text-emerald-600 font-semibold font-mono">Factor Found: 49...831</td>
+                            </tr>
+                            <!-- Placeholder Sample Data Row 3 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="136279841">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">136,279,841</td>
+                                <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">PRP Proof</span></td>
+                                <td class="px-6 py-4 text-xs font-mono">Verified Composite</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: 7^n - 2 Custom Discoveries -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Discovered Primes of Form $7^n - 2$</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="custom-count" class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <!-- Scrollable Table Container -->
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent ($n$)</th>
+                                <th scope="col" class="px-6 py-3">Digit Length</th>
+                                <th scope="col" class="px-6 py-3">Verification Software</th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-body">
+                            <!-- Placeholder Sample Data Row 1 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="5">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 5</td>
+                                <td class="px-6 py-4 font-mono">5 digits <span class="text-gray-400 text-xs">(16,805)</span></td>
+                                <td class="px-6 py-4 text-xs font-mono">PFGW / Lucas-Lehmer style</td>
+                            </tr>
+                            <!-- Placeholder Sample Data Row 2 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="117">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 117</td>
+                                <td class="px-6 py-4 font-mono">99 digits</td>
+                                <td class="px-6 py-4 text-xs font-mono">SageMath Probabilistic</td>
+                            </tr>
+                            <!-- Placeholder Sample Data Row 3 -->
+                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="1237">
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 1,237</td>
+                                <td class="px-6 py-4 font-mono">1,046 digits</td>
+                                <td class="px-6 py-4 text-xs font-mono">PRST / LLR Engine</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-gray-100 border-t border-gray-200 py-4 px-6 text-center text-xs text-gray-500 mt-auto">
+        <p>&copy; 2026 Prime Number Showcase Framework. Powered safely via GitHub Pages static site delivery hosting.</p>
+    </footer>
+
+    <!-- Interactive Search Filtration Script -->
+    <script>
+        function updateRowCounters() {
+            const mVisible = document.querySelectorAll('#mersenne-body .data-row:not(.hidden)').length;
+            const cVisible = document.querySelectorAll('#custom-body .data-row:not(.hidden)').length;
+            document.getElementById('mersenne-count').innerText = `${mVisible} listed`;
+            document.getElementById('custom-count').innerText = `${cVisible} listed`;
+        }
+
+        function filterLists() {
+            const query = document.getElementById('search-input').value.toLowerCase().replace(/,/g, '');
+            const rows = document.querySelectorAll('.data-row');
+            
+            rows.forEach(row => {
+                const searchVal = row.getAttribute('data-search').toLowerCase();
+                if (searchVal.includes(query) || query === '') {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+            updateRowCounters();
+        }
+
+        // Initialize counters when DOM fully processes
+        document.addEventListener("DOMContentLoaded", function() {
+            updateRowCounters();
+        });
+    </script>
+</body>
+</html>
