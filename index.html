@@ -12,7 +12,7 @@
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-        .custom-scrollbar::-webkit-scrollbar-line { background: #888; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen flex flex-col">
@@ -22,7 +22,7 @@
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-3xl font-extrabold tracking-tight">Prime Research Portfolio</h1>
-                <p class="text-blue-200 mt-1 text-sm md:text-base">Tracking official GIMPS eliminations and custom $7^n - 2$ discoveries.</p>
+                <p class="text-blue-200 mt-1 text-sm md:text-base">Tracking official GIMPS eliminations and custom 7^n - 2 discoveries.</p>
             </div>
             <div class="flex gap-3 text-xs md:text-sm">
                 <a href="https://www.mersenne.org/" target="_blank" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition shadow-sm">GIMPS Official Site</a>
@@ -41,19 +41,19 @@
                 <input id="search-input" type="text" placeholder="Type a value or exponent..." onkeyup="filterLists()" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none transition">
             </div>
             <div class="text-xs text-gray-500 text-center sm:text-right">
-                <span class="font-medium text-gray-700">Pro-Tip:</span> Use Git to push changes to your <code class="bg-gray-100 px-1 py-0.5 rounded font-mono">index.html</code> template file.
+                <span class="font-medium text-gray-700">Pro-Tip:</span> Both columns sync live automatically from your connected Google Sheet.
             </div>
         </div>
 
         <!-- 2-Column Responsive Matrix Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- LEFT COLUMN: Mersenne Primes (GIMPS) -->
+            <!-- LEFT COLUMN: Mersenne Primes (Columns A, B, C) -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
                 <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
                     <div>
                         <h2 class="text-lg font-bold text-gray-800">Mersenne Prime Eliminations</h2>
-                        <p class="text-xs text-gray-500 mt-0.5">Form: $2^p - 1$ verified through PrimeNet benchmarks.</p>
+                        <p class="text-xs text-gray-500 mt-0.5">Form: 2^p - 1 verified through PrimeNet benchmarks.</p>
                     </div>
                     <span id="mersenne-count" class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
                 </div>
@@ -63,40 +63,25 @@
                     <table class="w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
                             <tr>
-                                <th scope="col" class="px-6 py-3">Exponent ($p$)</th>
+                                <th scope="col" class="px-6 py-3">Exponent (p)</th>
                                 <th scope="col" class="px-6 py-3">Test Type</th>
                                 <th scope="col" class="px-6 py-3">Status / Factor Found</th>
                             </tr>
                         </thead>
                         <tbody id="mersenne-body">
-                            <!-- Placeholder Sample Data Row 1 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="103002457">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">103,002,457</td>
-                                <td class="px-6 py-4"><span class="bg-amber-100 text-amber-800 text-xs font-medium px-2 py-0.5 rounded">Trial Factoring (TF)</span></td>
-                                <td class="px-6 py-4 text-xs font-mono">Cleared to $2^{69}$</td>
-                            </tr>
-                            <!-- Placeholder Sample Data Row 2 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="87201911">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">87,201,911</td>
-                                <td class="px-6 py-4"><span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-0.5 rounded">P-1 Factor</span></td>
-                                <td class="px-6 py-4 text-xs text-emerald-600 font-semibold font-mono">Factor Found: 49...831</td>
-                            </tr>
-                            <!-- Placeholder Sample Data Row 3 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="136279841">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">136,279,841</td>
-                                <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">PRP Proof</span></td>
-                                <td class="px-6 py-4 text-xs font-mono">Verified Composite</td>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- RIGHT COLUMN: 7^n - 2 Custom Discoveries -->
+            <!-- RIGHT COLUMN: 7^n - 2 Custom Discoveries (Columns E, F, G) -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
                 <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-800">Discovered Primes of Form $7^n - 2$</h2>
+                        <h2 class="text-lg font-bold text-gray-800">Discovered Primes of Form 7^n - 2</h2>
                         <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
                     </div>
                     <span id="custom-count" class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
@@ -107,29 +92,14 @@
                     <table class="w-full text-sm text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
                             <tr>
-                                <th scope="col" class="px-6 py-3">Exponent ($n$)</th>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
                                 <th scope="col" class="px-6 py-3">Digit Length</th>
                                 <th scope="col" class="px-6 py-3">Verification Software</th>
                             </tr>
                         </thead>
                         <tbody id="custom-body">
-                            <!-- Placeholder Sample Data Row 1 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="5">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 5</td>
-                                <td class="px-6 py-4 font-mono">5 digits <span class="text-gray-400 text-xs">(16,805)</span></td>
-                                <td class="px-6 py-4 text-xs font-mono">PFGW / Lucas-Lehmer style</td>
-                            </tr>
-                            <!-- Placeholder Sample Data Row 2 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="117">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 117</td>
-                                <td class="px-6 py-4 font-mono">99 digits</td>
-                                <td class="px-6 py-4 text-xs font-mono">SageMath Probabilistic</td>
-                            </tr>
-                            <!-- Placeholder Sample Data Row 3 -->
-                            <tr class="data-row border-b border-gray-100 hover:bg-gray-50 transition" data-search="1237">
-                                <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 1,237</td>
-                                <td class="px-6 py-4 font-mono">1,046 digits</td>
-                                <td class="px-6 py-4 text-xs font-mono">PRST / LLR Engine</td>
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -144,8 +114,11 @@
         <p>&copy; 2026 Prime Number Showcase Framework. Powered safely via GitHub Pages static site delivery hosting.</p>
     </footer>
 
-    <!-- Interactive Search Filtration Script -->
+    <!-- Dynamic Fetch and Filtration Script -->
     <script>
+        const SHEET_ID = '1JtSBkQZEaQ3XGULbvn-vIu1NEhA6pJ49MHsWSP6br8w';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+
         function updateRowCounters() {
             const mVisible = document.querySelectorAll('#mersenne-body .data-row:not(.hidden)').length;
             const cVisible = document.querySelectorAll('#custom-body .data-row:not(.hidden)').length;
@@ -153,12 +126,111 @@
             document.getElementById('custom-count').innerText = `${cVisible} listed`;
         }
 
+        function cleanValue(str) {
+            if (!str) return '';
+            return str.replace(/^"|"$/g, '').replace(/\$/g, '').trim();
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            return lines.map(line => {
+                const values = [];
+                let insideQuote = false;
+                let entry = '';
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        insideQuote = !insideQuote;
+                    } else if (char === ',' && !insideQuote) {
+                        values.push(cleanValue(entry));
+                        entry = '';
+                        continue;
+                    }
+                    entry += char;
+                }
+                values.push(cleanValue(entry));
+                return values;
+            });
+        }
+
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(SHEET_URL + '&timestamp=' + new Date().getTime());
+                const csvData = await response.text();
+                const rows = parseCSV(csvData);
+
+                const mersenneBody = document.getElementById('mersenne-body');
+                const customBody = document.getElementById('custom-body');
+
+                mersenneBody.innerHTML = '';
+                customBody.innerHTML = '';
+
+                // Skip header row
+                const dataRows = rows.slice(1);
+
+                let hasMersenne = false;
+                let hasCustom = false;
+
+                dataRows.forEach(row => {
+                    // Extract Cols A, B, C (Indices 0, 1, 2)
+                    const mCol1 = row[0] || '';
+                    const mCol2 = row[1] || '';
+                    const mCol3 = row[2] || '';
+
+                    // Extract Cols E, F, G (Indices 4, 5, 6)
+                    const cCol1 = row[4] || '';
+                    const cCol2 = row[5] || '';
+                    const cCol3 = row[6] || '';
+
+                    // Populate Mersenne Table (Cols A-C) if valid entry exists
+                    if (mCol1 || mCol2 || mCol3) {
+                        hasMersenne = true;
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
+                        tr.setAttribute('data-search', `${mCol1} ${mCol2} ${mCol3}`.toLowerCase());
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${mCol1}</td>
+                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">${mCol2}</span></td>
+                            <td class="px-6 py-4 text-xs font-mono">${mCol3}</td>
+                        `;
+                        mersenneBody.appendChild(tr);
+                    }
+
+                    // Populate Custom 7^n - 2 Table (Cols E-G) if valid entry exists
+                    if (cCol1 || cCol2 || cCol3) {
+                        hasCustom = true;
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
+                        tr.setAttribute('data-search', `${cCol1} ${cCol2} ${cCol3}`.toLowerCase());
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${cCol1}</td>
+                            <td class="px-6 py-4 font-mono">${cCol2}</td>
+                            <td class="px-6 py-4 text-xs font-mono">${cCol3}</td>
+                        `;
+                        customBody.appendChild(tr);
+                    }
+                });
+
+                if (!hasMersenne) {
+                    mersenneBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                }
+
+                if (!hasCustom) {
+                    customBody.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                }
+
+                filterLists();
+            } catch (err) {
+                console.error('Error fetching Google Sheet data:', err);
+            }
+        }
+
         function filterLists() {
             const query = document.getElementById('search-input').value.toLowerCase().replace(/,/g, '');
             const rows = document.querySelectorAll('.data-row');
             
             rows.forEach(row => {
-                const searchVal = row.getAttribute('data-search').toLowerCase();
+                const searchVal = row.getAttribute('data-search') ? row.getAttribute('data-search').toLowerCase() : '';
                 if (searchVal.includes(query) || query === '') {
                     row.classList.remove('hidden');
                 } else {
@@ -168,9 +240,10 @@
             updateRowCounters();
         }
 
-        // Initialize counters when DOM fully processes
         document.addEventListener("DOMContentLoaded", function() {
-            updateRowCounters();
+            fetchSheetData();
+            // Automatically poll Google Sheets every 30 seconds for live data updates
+            setInterval(fetchSheetData, 30000);
         });
     </script>
 </body>
