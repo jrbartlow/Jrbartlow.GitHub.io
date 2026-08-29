@@ -1,0 +1,19 @@
+[PRIMO - Work Report]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Work=Certification
+ID=B4A0E016CD43E
+Created=Aug-26-2026 06:38:29 AM
+
+[Common]
+Path=/home/justin-bartlow/prime_search/
+Selected=1
+Processed=1
+Certified=1
+Candidate=Certified, 27804s
+
+[Candidate]
+Input=7090.in
+Output=primo-B4A0E016CD43E.out
+Status=Candidate certified prime
+

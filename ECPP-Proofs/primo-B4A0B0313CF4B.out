@@ -1,0 +1,33 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A0B0313CF4B
+Created=Aug-23-2026 02:20:29 PM
+TestCount=0
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 7^8 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.01s
+2ndPhase=0.01s
+Total=0.02s
+
+[Running Times (Processes)]
+1stPhase=0.01s
+2ndPhase=0.01s
+Total=0.02s
+
+[Candidate]
+File=/home/justin-bartlow/prime_search/8.in
+N=$57F6BF
+HexadecimalSize=6
+DecimalSize=7
+BinarySize=23
+
+[Signature]
+1=$2AA1A2C8692FD980ED5BEA5F77C1EBE48B29F31DA051573C
+2=$AA6DF2D6EB089F2B3443134DC30ACCDD8C4AA49365990827
+

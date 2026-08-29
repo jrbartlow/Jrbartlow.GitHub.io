@@ -1,0 +1,37 @@
+[PRIMO - Work Report]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Work=Certification
+ID=B4A0B0314EFD8
+Created=Aug-23-2026 02:21:43 PM
+
+[Common]
+Path=/home/justin-bartlow/prime_search/
+Selected=4
+Processed=4
+Certified=4
+Candidate 1=Certified, 0.03s
+Candidate 2=Certified, 0.01s
+Candidate 3=Certified, 0.07s
+Candidate 4=Certified, 0.11s
+
+[Candidate 1]
+Input=28.in
+Output=primo-B4A0B0314EFD8-001.out
+Status=Candidate certified prime
+
+[Candidate 2]
+Input=31.in
+Output=primo-B4A0B0314EFD8-002.out
+Status=Candidate certified prime
+
+[Candidate 3]
+Input=84.in
+Output=primo-B4A0B0314EFD8-003.out
+Status=Candidate certified prime
+
+[Candidate 4]
+Input=98.in
+Output=primo-B4A0B0314EFD8-004.out
+Status=Candidate certified prime
+
