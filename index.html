@@ -114,10 +114,10 @@
         <p>&copy; 2026 Prime Number Showcase Framework. Powered safely via GitHub Pages static site delivery hosting.</p>
     </footer>
 
-    <!-- Dynamic Fetch and Filtration Script -->
+    <!-- Dynamic Fetch and Hyperlink Rendering Script -->
     <script>
-        const SHEET_ID = '1JtSBkQZEaQ3XGULbvn-vIu1NEhA6pJ49MHsWSP6br8w';
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+        // Replace this URL with your deployed Google Apps Script Web App URL
+        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBVv5zkmge6Igxw_WyzAztlt0Rc3GwhHqqaUJnZP7R5GPJTLXmS-6wmv5P3g6XC9ud/exec';
 
         function updateRowCounters() {
             const mVisible = document.querySelectorAll('#mersenne-body .data-row:not(.hidden)').length;
@@ -126,38 +126,20 @@
             document.getElementById('custom-count').innerText = `${cVisible} listed`;
         }
 
-        function cleanValue(str) {
-            if (!str) return '';
-            return str.replace(/^"|"$/g, '').replace(/\$/g, '').trim();
-        }
-
-        function parseCSV(text) {
-            const lines = text.split('\n').filter(line => line.trim() !== '');
-            return lines.map(line => {
-                const values = [];
-                let insideQuote = false;
-                let entry = '';
-                for (let i = 0; i < line.length; i++) {
-                    const char = line[i];
-                    if (char === '"') {
-                        insideQuote = !insideQuote;
-                    } else if (char === ',' && !insideQuote) {
-                        values.push(cleanValue(entry));
-                        entry = '';
-                        continue;
-                    }
-                    entry += char;
-                }
-                values.push(cleanValue(entry));
-                return values;
-            });
+        // Helper function to format cell content with or without an active hyperlink
+        function renderCellContent(cellData, customClass = '') {
+            if (!cellData || !cellData.text) return '';
+            const text = cellData.text;
+            if (cellData.url) {
+                return `<a href="${cellData.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline transition ${customClass}">${text}</a>`;
+            }
+            return text;
         }
 
         async function fetchSheetData() {
             try {
-                const response = await fetch(SHEET_URL + '&timestamp=' + new Date().getTime());
-                const csvData = await response.text();
-                const rows = parseCSV(csvData);
+                const response = await fetch(APPS_SCRIPT_WEB_APP_URL + '?timestamp=' + new Date().getTime());
+                const rows = await response.json();
 
                 const mersenneBody = document.getElementById('mersenne-body');
                 const customBody = document.getElementById('custom-body');
@@ -173,39 +155,39 @@
 
                 dataRows.forEach(row => {
                     // Extract Cols A, B, C (Indices 0, 1, 2)
-                    const mCol1 = row[0] || '';
-                    const mCol2 = row[1] || '';
-                    const mCol3 = row[2] || '';
+                    const mCol1 = row[0] || { text: '', url: null };
+                    const mCol2 = row[1] || { text: '', url: null };
+                    const mCol3 = row[2] || { text: '', url: null };
 
                     // Extract Cols E, F, G (Indices 4, 5, 6)
-                    const cCol1 = row[4] || '';
-                    const cCol2 = row[5] || '';
-                    const cCol3 = row[6] || '';
+                    const cCol1 = row[4] || { text: '', url: null };
+                    const cCol2 = row[5] || { text: '', url: null };
+                    const cCol3 = row[6] || { text: '', url: null };
 
-                    // Populate Mersenne Table (Cols A-C) if valid entry exists
-                    if (mCol1 || mCol2 || mCol3) {
+                    // Populate Mersenne Table (Cols A-C)
+                    if (mCol1.text || mCol2.text || mCol3.text) {
                         hasMersenne = true;
                         const tr = document.createElement('tr');
                         tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
-                        tr.setAttribute('data-search', `${mCol1} ${mCol2} ${mCol3}`.toLowerCase());
+                        tr.setAttribute('data-search', `${mCol1.text} ${mCol2.text} ${mCol3.text}`.toLowerCase());
                         tr.innerHTML = `
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${mCol1}</td>
-                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">${mCol2}</span></td>
-                            <td class="px-6 py-4 text-xs font-mono">${mCol3}</td>
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${renderCellContent(mCol1)}</td>
+                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">${renderCellContent(mCol2)}</span></td>
+                            <td class="px-6 py-4 text-xs font-mono">${renderCellContent(mCol3)}</td>
                         `;
                         mersenneBody.appendChild(tr);
                     }
 
-                    // Populate Custom 7^n - 2 Table (Cols E-G) if valid entry exists
-                    if (cCol1 || cCol2 || cCol3) {
+                    // Populate Custom 7^n - 2 Table (Cols E-G)
+                    if (cCol1.text || cCol2.text || cCol3.text) {
                         hasCustom = true;
                         const tr = document.createElement('tr');
                         tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
-                        tr.setAttribute('data-search', `${cCol1} ${cCol2} ${cCol3}`.toLowerCase());
+                        tr.setAttribute('data-search', `${cCol1.text} ${cCol2.text} ${cCol3.text}`.toLowerCase());
                         tr.innerHTML = `
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${cCol1}</td>
-                            <td class="px-6 py-4 font-mono">${cCol2}</td>
-                            <td class="px-6 py-4 text-xs font-mono">${cCol3}</td>
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${renderCellContent(cCol1)}</td>
+                            <td class="px-6 py-4 font-mono">${renderCellContent(cCol2)}</td>
+                            <td class="px-6 py-4 text-xs font-mono">${renderCellContent(cCol3)}</td>
                         `;
                         customBody.appendChild(tr);
                     }
@@ -221,7 +203,7 @@
 
                 filterLists();
             } catch (err) {
-                console.error('Error fetching Google Sheet data:', err);
+                console.error('Error fetching Google Sheet JSON data:', err);
             }
         }
 
@@ -242,7 +224,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             fetchSheetData();
-            // Automatically poll Google Sheets every 30 seconds for live data updates
+            // Automatically poll every 30 seconds for live data and URL updates
             setInterval(fetchSheetData, 30000);
         });
     </script>
