@@ -25,6 +25,7 @@
                 <p class="text-blue-200 mt-1 text-sm md:text-base">Tracking official GIMPS eliminations and custom 7^n - 2 discoveries.</p>
             </div>
             <div class="flex gap-3 text-xs md:text-sm">
+                <a href="verification.html" class="bg-emerald-700 hover:bg-emerald-600 px-4 py-2 rounded-md font-medium transition shadow-sm">Verification Process</a>
                 <a href="https://www.mersenne.org/" target="_blank" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition shadow-sm">GIMPS Official Site</a>
                 <a href="https://t5k.org/" target="_blank" class="bg-blue-700 hover:bg-blue-600 px-4 py-2 rounded-md font-medium transition shadow-sm">The Prime Pages</a>
             </div>
@@ -116,7 +117,6 @@
 
     <!-- Dynamic Fetch and Hyperlink Rendering Script -->
     <script>
-        // Replace this URL with your deployed Google Apps Script Web App URL
         const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBVv5zkmge6Igxw_WyzAztlt0Rc3GwhHqqaUJnZP7R5GPJTLXmS-6wmv5P3g6XC9ud/exec';
 
         function updateRowCounters() {
@@ -126,7 +126,6 @@
             document.getElementById('custom-count').innerText = `${cVisible} listed`;
         }
 
-        // Helper function to format cell content with or without an active hyperlink
         function renderCellContent(cellData, customClass = '') {
             if (!cellData || !cellData.text) return '';
             const text = cellData.text;
@@ -147,24 +146,20 @@
                 mersenneBody.innerHTML = '';
                 customBody.innerHTML = '';
 
-                // Skip header row
                 const dataRows = rows.slice(1);
 
                 let hasMersenne = false;
                 let hasCustom = false;
 
                 dataRows.forEach(row => {
-                    // Extract Cols A, B, C (Indices 0, 1, 2)
                     const mCol1 = row[0] || { text: '', url: null };
                     const mCol2 = row[1] || { text: '', url: null };
                     const mCol3 = row[2] || { text: '', url: null };
 
-                    // Extract Cols E, F, G (Indices 4, 5, 6)
                     const cCol1 = row[4] || { text: '', url: null };
                     const cCol2 = row[5] || { text: '', url: null };
                     const cCol3 = row[6] || { text: '', url: null };
 
-                    // Populate Mersenne Table (Cols A-C)
                     if (mCol1.text || mCol2.text || mCol3.text) {
                         hasMersenne = true;
                         const tr = document.createElement('tr');
@@ -178,7 +173,6 @@
                         mersenneBody.appendChild(tr);
                     }
 
-                    // Populate Custom 7^n - 2 Table (Cols E-G)
                     if (cCol1.text || cCol2.text || cCol3.text) {
                         hasCustom = true;
                         const tr = document.createElement('tr');
@@ -224,7 +218,6 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             fetchSheetData();
-            // Automatically poll every 30 seconds for live data and URL updates
             setInterval(fetchSheetData, 30000);
         });
     </script>
