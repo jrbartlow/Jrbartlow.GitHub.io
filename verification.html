@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primality Verification Pipeline & Proof Certificates</title>
-    <!-- Tailwind CSS for modern layout -->
+    <title>Primality Verification Pipeline & Methodology</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- MathJax for mathematical expressions -->
+    <!-- MathJax for rendering equations -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/MathJax.js?config=TeX-mml-chtml"></script>
     <style>
@@ -21,8 +21,8 @@
     <header class="bg-blue-900 text-white py-8 px-6 shadow-md">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <div>
-                <h1 class="text-3xl font-extrabold tracking-tight">Primality Verification Pipeline</h1>
-                <p class="text-blue-200 mt-1 text-sm md:text-base">Deterministic ECPP Proofs & Ultra-Large Miller-Rabin Certification for \(7^n - 2\).</p>
+                <h1 class="text-3xl font-extrabold tracking-tight">Primality Verification Methodology</h1>
+                <p class="text-blue-200 mt-1 text-sm md:text-base">Technical overview of testing stages, deterministic proofs, and high-certainty certification.</p>
             </div>
             <div class="flex gap-3 text-xs md:text-sm">
                 <a href="index.html" class="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition shadow-sm">&larr; Back to Dashboard</a>
@@ -34,9 +34,9 @@
     <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
 
-        <!-- Stage 1: Pipeline Overview -->
+        <!-- Verification Stages Overview -->
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-3 mb-4">Multi-Stage Verification Architecture</h2>
+            <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-3 mb-4">Verification Pipeline Architecture</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 
                 <!-- Stage 1 -->
@@ -46,10 +46,10 @@
                         <h3 class="font-bold text-gray-900">Sieve & PRP Screening</h3>
                     </div>
                     <p class="text-sm text-gray-600 mb-3">
-                        Candidates of the form \(7^n - 2\) are sieved locally using modular arithmetic up to \(p = 10,000,000\), removing ~92% of composites.
+                        Candidates of the form \(7^n - 2\) are sieved locally using modular arithmetic up to \(p = 10,000,000\), eliminating ~92% of composite numbers.
                     </p>
                     <p class="text-sm text-gray-600">
-                        Survivors pass to <strong>OpenPFGW</strong> for a 3-PRP test to confirm probable primality (error bound \(&lt; 2^{-128}\)).
+                        Survivors are tested using <strong>OpenPFGW</strong> executing a 3-PRP test to establish probable primality.
                     </p>
                 </div>
 
@@ -60,10 +60,10 @@
                         <h3 class="font-bold text-gray-900">Deterministic ECPP</h3>
                     </div>
                     <p class="text-sm text-gray-600 mb-3">
-                        For moderate exponents, confirmed PRPs are run through <strong>Primo (v4.3.3 LX64)</strong> executing Elliptic Curve Primality Proving.
+                        For moderate exponents, confirmed PRPs are run through <strong>Primo (v4.3.3 LX64)</strong> executing Elliptic Curve Primality Proving[cite: 1].
                     </p>
                     <p class="text-sm text-gray-600">
-                        Primo outputs a 100% mathematically rigorous certificate (`.out`) independently verifiable with `verifier-f4`.
+                        Primo constructs a 100% mathematically rigorous proof certificate (`.out`) that can be independently validated.
                     </p>
                 </div>
 
@@ -74,115 +74,37 @@
                         <h3 class="font-bold text-gray-900">Ultra-Large MR Certification</h3>
                     </div>
                     <p class="text-sm text-gray-600 mb-3">
-                        When candidate digit lengths exceed practical ECPP compute limits, targets are certified to near-certainty via a multi-stage Miller-Rabin suite.
+                        When candidate digit lengths exceed practical ECPP compute limits, numbers are certified to near-certainty via a multi-stage Miller-Rabin suite.
                     </p>
                     <p class="text-sm text-gray-600">
-                        Evaluating \(k\) independent bases reduces composite error probability to under \(4^{-k}\) (e.g., \(1.6 \times 10^{-60}\) for \(k=100\)).
+                        Evaluating \(k\) independent random bases reduces composite error probability to under \(4^{-k}\) (e.g., \(1.6 \times 10^{-60}\) for \(k=100\))[cite: 6].
                     </p>
                 </div>
 
             </div>
         </div>
 
-        <!-- Section 2: Code & Verification Tools -->
+        <!-- Open Source Code & Scripts -->
         <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <h2 class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-3 mb-4">Open-Source Python Certification Tools</h2>
             <p class="text-sm text-gray-600 mb-4">
-                To maintain transparency and enable peer auditability, the Python scripts used for high-precision Miller-Rabin certification and verification are publicly available:
+                To enable peer verification and auditability, the custom Python programs used for generating dual-stage Miller-Rabin tests and verifying audit trace logs are publicly available below[cite: 5, 6]:
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="p-4 border border-gray-200 rounded-lg bg-gray-50 flex justify-between items-center">
                     <div>
                         <h4 class="font-bold text-gray-900 text-sm">Miller-Rabin Dual-Stage Tester</h4>
-                        <p class="text-xs text-gray-500 font-mono">mr_cert_test.py</p>
+                        <p class="text-xs text-gray-500 font-mono mt-1">mr_cert_test.py</p>
                     </div>
-                    <a href="scripts/mr_cert_test.py" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded transition">Download Script</a>
+                    <a href="scripts/mr_cert_test.py" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded transition shadow-sm">Download Script</a>
                 </div>
                 <div class="p-4 border border-gray-200 rounded-lg bg-gray-50 flex justify-between items-center">
                     <div>
                         <h4 class="font-bold text-gray-900 text-sm">Independent Certificate Auditor</h4>
-                        <p class="text-xs text-gray-500 font-mono">mr_cert_verification.py</p>
+                        <p class="text-xs text-gray-500 font-mono mt-1">mr_cert_verification.py</p>
                     </div>
-                    <a href="scripts/mr_cert_verification.py" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded transition">Download Script</a>
+                    <a href="scripts/mr_cert_verification.py" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded transition shadow-sm">Download Script</a>
                 </div>
-            </div>
-        </div>
-
-        <!-- Section 3: Deterministic ECPP Proof Certificates Table -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
-            <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
-                <div>
-                    <h2 class="text-lg font-bold text-gray-800">Deterministic ECPP Proof Certificates</h2>
-                    <p class="text-xs text-gray-500 mt-0.5">Rigorous 100% mathematical proof certificates generated by Primo LX64.</p>
-                </div>
-                <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Primo ECPP</span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Exponent (\(n\))</th>
-                            <th scope="col" class="px-6 py-3">Form</th>
-                            <th scope="col" class="px-6 py-3">Status</th>
-                            <th scope="col" class="px-6 py-3">Certificate File</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 1508</td>
-                            <td class="px-6 py-4 font-mono">7^1508 - 2</td>
-                            <td class="px-6 py-4"><span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded">Certified Prime</span></td>
-                            <td class="px-6 py-4 font-mono"><a href="proofs/7_1508.out" target="_blank" class="text-blue-600 hover:text-blue-800 underline">7_1508.out</a></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 1586</td>
-                            <td class="px-6 py-4 font-mono">7^1586 - 2</td>
-                            <td class="px-6 py-4"><span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded">Certified Prime</span></td>
-                            <td class="px-6 py-4 font-mono"><a href="proofs/7_1586.out" target="_blank" class="text-blue-600 hover:text-blue-800 underline">7_1586.out</a></td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 7090</td>
-                            <td class="px-6 py-4 font-mono">7^7090 - 2</td>
-                            <td class="px-6 py-4"><span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded">Certified Prime</span></td>
-                            <td class="px-6 py-4 font-mono"><a href="proofs/7_7090.out" target="_blank" class="text-blue-600 hover:text-blue-800 underline">7_7090.out</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Section 4: High-Certainty Miller-Rabin Certificates Table -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
-            <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
-                <div>
-                    <h2 class="text-lg font-bold text-gray-800">Ultra-Large Miller-Rabin Certification Records</h2>
-                    <p class="text-xs text-gray-500 mt-0.5">Certificates for numbers where ECPP is computationally intractable (Error Bound &lt; 10⁻⁶⁰).</p>
-                </div>
-                <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">MR Certified</span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Exponent (\(n\))</th>
-                            <th scope="col" class="px-6 py-3">Evaluated Expression</th>
-                            <th scope="col" class="px-6 py-3">Bases Audited (\(k\))</th>
-                            <th scope="col" class="px-6 py-3">False-Positive Bound</th>
-                            <th scope="col" class="px-6 py-3">Certification Record</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 font-mono font-bold text-gray-900">n = 274120</td>
-                            <td class="px-6 py-4 font-mono">7^274120 - 2</td>
-                            <td class="px-6 py-4 font-mono">100 bases</td>
-                            <td class="px-6 py-4 font-mono text-xs">1.6038 × 10⁻⁶⁰</td>
-                            <td class="px-6 py-4 font-mono"><a href="proofs/MR_7^274120-2_certification.txt" target="_blank" class="text-blue-600 hover:text-blue-800 underline">MR_7^274120-2_cert.txt</a></td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
 
