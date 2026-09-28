@@ -1,0 +1,40 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A2F03459C6C
+Created=Sep-28-2026 03:14:53 PM
+TestCount=1
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 17^24 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.01s
+2ndPhase=0.01s
+Total=0.02s
+
+[Running Times (Processes)]
+1stPhase=0.02s
+2ndPhase=0.01s
+Total=0.03s
+
+[Candidate]
+File=/home/justin-bartlow/prime_search/17^24-2.in
+N=$448D15C2054BCEE86CE81957F
+HexadecimalSize=25
+DecimalSize=30
+BinarySize=99
+
+[1]
+S=$20265167AB
+W=$3CE6AE770D1CB
+A=-$98
+B=$2D2
+T=0
+
+[Signature]
+1=$4CD7564D60DF9C720E17A462AEF2FE5066515736A26B1428
+2=$CB437668888696793DF5A7EB2F5E6EBFECA4C5FCA8243855
+
