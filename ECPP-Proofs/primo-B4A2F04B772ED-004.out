@@ -1,0 +1,44 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A2F04B772ED
+Created=Sep-28-2026 09:58:51 PM
+TestCount=2
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 19^20 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.01s
+2ndPhase=0.01s
+Total=0.02s
+
+[Running Times (Processes)]
+1stPhase=0.01s
+2ndPhase=0.01s
+Total=0.02s
+
+[Candidate]
+File=/home/justin-bartlow/prime_search/19^20-2.in
+N=$1F17FC8B585F0CA4BBDB4F
+HexadecimalSize=22
+DecimalSize=26
+BinarySize=85
+
+[1]
+S=$1A
+B=$2
+
+[2]
+S=$A32A2
+W=$2296E0746B2
+A=-$1E
+B=$38
+T=0
+
+[Signature]
+1=$098AEF9D6556B8FD7C38F5C66FCF34CCD2B70411955FF629
+2=$5DAFE87D7AB4854B54C98B41A57AA1EA962C7C618F554D0E
+

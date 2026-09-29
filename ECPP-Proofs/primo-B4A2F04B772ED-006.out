@@ -1,0 +1,65 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A2F04B772ED
+Created=Sep-28-2026 09:58:51 PM
+TestCount=5
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 19^38 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Running Times (Processes)]
+1stPhase=0.04s
+2ndPhase=0.02s
+Total=0.06s
+
+[Candidate]
+File=/home/justin-bartlow/prime_search/19^38-2.in
+N=$2AD9C4D5E03EC1F790F2DE94A3A2A9A870D6B3D77
+HexadecimalSize=41
+DecimalSize=49
+BinarySize=162
+
+[1]
+S=$B0
+W=$2BA2DB6011F552DE3D4C8
+A=-$23
+B=$62
+T=$4
+
+[2]
+S=$CEB00
+W=$3BBE8A559837CBEBB082
+A=0
+B=$F9501C222FF8C5A0629B56F318C9441222BE2D
+T=$2
+
+[3]
+S=$6719A
+W=$118AADE70F90F795B8
+A=-$CDC5152F43F7384DD11239A9FB71F62B9
+B=0
+T=$1
+
+[4]
+S=$63F53B5A
+W=$6D2F2F8B5907FE4
+A=$2
+B=0
+T=$1
+
+[5]
+S=$177347A
+Q=$C
+
+[Signature]
+1=$D07FC689F4E85BF04158799BAD943FF6B7EEFBD51EED7AC9
+2=$75F46CEC5141CE4EAE83CFEF79821B63DFD502C713C53E04
+

@@ -1,0 +1,33 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A2F04B772ED
+Created=Sep-28-2026 09:58:51 PM
+TestCount=0
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 19^14 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.00s
+2ndPhase=0.01s
+Total=0.01s
+
+[Running Times (Processes)]
+1stPhase=0.00s
+2ndPhase=0.01s
+Total=0.01s
+
+[Candidate]
+File=/home/justin-bartlow/prime_search/19^14-2.in
+N=$B16A458EF403F17
+HexadecimalSize=15
+DecimalSize=18
+BinarySize=60
+
+[Signature]
+1=$E0725AABE30A679422FB994CC170133649C6B698CAF4434F
+2=$9A62D531815D12AC78A8883B381358C8951A6E7AC2DB89D6
+
