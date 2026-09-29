@@ -46,6 +46,434 @@
             </div>
         </div>
 
+        <!-- 2-Column (Width) by 4-Row (Height) Responsive Matrix Grid Layout (8 Boxes) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Box 1: Mersenne Primes (Columns A, B, C) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Mersenne Prime Eliminations</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Form: 2^p - 1 verified through PrimeNet benchmarks.</p>
+                    </div>
+                    <span id="mersenne-count" class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (p)</th>
+                                <th scope="col" class="px-6 py-3">Test Type</th>
+                                <th scope="col" class="px-6 py-3">Status / Factor Found</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mersenne-body">
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 2: 7^n - 2 Custom Discoveries (Columns E, F, G) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable and Verified Primes of Form 7^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="custom-count" class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Digit Length</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-body">
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 3: 11^n - 2 Custom Discoveries (Columns I, J) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 11^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p11-count" class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p11-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 4: 13^n - 2 Custom Discoveries (Columns L, M) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 13^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p13-count" class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p13-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 5: 15^n - 2 Custom Discoveries (Columns O, P) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 15^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p15-count" class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p15-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 6: 17^n - 2 Custom Discoveries (Columns R, S) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 17^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p17-count" class="bg-rose-100 text-rose-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p17-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 7: 19^n - 2 Custom Discoveries (Columns U, V) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 19^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p19-count" class="bg-cyan-100 text-cyan-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p19-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Box 8: 21^n - 2 Custom Discoveries (Columns X, Y) -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[650px]">
+                <div class="p-5 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-white flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-800">Probable Primes of Form 21^n - 2</h2>
+                        <p class="text-xs text-gray-500 mt-0.5">Custom verified independent primality results.</p>
+                    </div>
+                    <span id="p21-count" class="bg-teal-100 text-teal-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">0 entries</span>
+                </div>
+                
+                <div class="overflow-y-auto flex-grow custom-scrollbar">
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0 border-b border-gray-200 z-10">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Exponent (n)</th>
+                                <th scope="col" class="px-6 py-3">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="p21-body">
+                            <tr>
+                                <td colspan="2" class="px-6 py-4 text-center text-gray-400">Loading dynamic data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="bg-gray-100 border-t border-gray-200 py-4 px-6 text-center text-xs text-gray-500 mt-auto">
+        <p>&copy; 2026 Prime Number Showcase Framework. Powered safely via GitHub Pages static site delivery hosting.</p>
+    </footer>
+
+    <!-- Dynamic Fetch and Hyperlink Rendering Script -->
+    <script>
+        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBVv5zkmge6Igxw_WyzAztlt0Rc3GwhHqqaUJnZP7R5GPJTLXmS-6wmv5P3g6XC9ud/exec';
+
+        function updateRowCounters() {
+            const boxes = [
+                { id: 'mersenne-body', countId: 'mersenne-count' },
+                { id: 'custom-body', countId: 'custom-count' },
+                { id: 'p11-body', countId: 'p11-count' },
+                { id: 'p13-body', countId: 'p13-count' },
+                { id: 'p15-body', countId: 'p15-count' },
+                { id: 'p17-body', countId: 'p17-count' },
+                { id: 'p19-body', countId: 'p19-count' },
+                { id: 'p21-body', countId: 'p21-count' }
+            ];
+
+            boxes.forEach(box => {
+                const visibleCount = document.querySelectorAll(`#${box.id} .data-row:not(.hidden)`).length;
+                document.getElementById(box.countId).innerText = `${visibleCount} listed`;
+            });
+        }
+
+        function renderCellContent(cellData, customClass = '') {
+            if (!cellData || !cellData.text) return '';
+            const text = cellData.text;
+            if (cellData.url) {
+                return `<a href="${cellData.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline transition ${customClass}">${text}</a>`;
+            }
+            return text;
+        }
+
+        async function fetchSheetData() {
+            try {
+                const response = await fetch(APPS_SCRIPT_WEB_APP_URL + '?timestamp=' + new Date().getTime());
+                const rows = await response.json();
+
+                const bodies = {
+                    mersenne: document.getElementById('mersenne-body'),
+                    custom: document.getElementById('custom-body'),
+                    p11: document.getElementById('p11-body'),
+                    p13: document.getElementById('p13-body'),
+                    p15: document.getElementById('p15-body'),
+                    p17: document.getElementById('p17-body'),
+                    p19: document.getElementById('p19-body'),
+                    p21: document.getElementById('p21-body')
+                };
+
+                Object.values(bodies).forEach(b => b.innerHTML = '');
+
+                const dataRows = rows.slice(1);
+
+                let hasData = {
+                    mersenne: false,
+                    custom: false,
+                    p11: false,
+                    p13: false,
+                    p15: false,
+                    p17: false,
+                    p19: false,
+                    p21: false
+                };
+
+                dataRows.forEach(row => {
+                    // Mapping columns: 0-indexed
+                    // A-C: 0, 1, 2
+                    // E-G: 4, 5, 6
+                    // I-J: 8, 9
+                    // L-M: 11, 12
+                    // O-P: 14, 15
+                    // R-S: 17, 18
+                    // U-V: 20, 21
+                    // X-Y: 23, 24
+
+                    const mCol1 = row[0] || { text: '', url: null };
+                    const mCol2 = row[1] || { text: '', url: null };
+                    const mCol3 = row[2] || { text: '', url: null };
+
+                    const cCol1 = row[4] || { text: '', url: null };
+                    const cCol2 = row[5] || { text: '', url: null };
+                    const cCol3 = row[6] || { text: '', url: null };
+
+                    const p11Col1 = row[8] || { text: '', url: null };
+                    const p11Col2 = row[9] || { text: '', url: null };
+
+                    const p13Col1 = row[11] || { text: '', url: null };
+                    const p13Col2 = row[12] || { text: '', url: null };
+
+                    const p15Col1 = row[14] || { text: '', url: null };
+                    const p15Col2 = row[15] || { text: '', url: null };
+
+                    const p17Col1 = row[17] || { text: '', url: null };
+                    const p17Col2 = row[18] || { text: '', url: null };
+
+                    const p19Col1 = row[20] || { text: '', url: null };
+                    const p19Col2 = row[21] || { text: '', url: null };
+
+                    const p21Col1 = row[23] || { text: '', url: null };
+                    const p21Col2 = row[24] || { text: '', url: null };
+
+                    // Box 1: Mersenne
+                    if (mCol1.text || mCol2.text || mCol3.text) {
+                        hasData.mersenne = true;
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
+                        tr.setAttribute('data-search', `${mCol1.text} ${mCol2.text} ${mCol3.text}`.toLowerCase());
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${renderCellContent(mCol1)}</td>
+                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-0.5 rounded">${renderCellContent(mCol2)}</span></td>
+                            <td class="px-6 py-4 text-xs font-mono">${renderCellContent(mCol3)}</td>
+                        `;
+                        bodies.mersenne.appendChild(tr);
+                    }
+
+                    // Box 2: 7^n - 2
+                    if (cCol1.text || cCol2.text || cCol3.text) {
+                        hasData.custom = true;
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
+                        tr.setAttribute('data-search', `${cCol1.text} ${cCol2.text} ${cCol3.text}`.toLowerCase());
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-mono font-bold text-gray-900">${renderCellContent(cCol1)}</td>
+                            <td class="px-6 py-4 font-mono">${renderCellContent(cCol2)}</td>
+                            <td class="px-6 py-4 text-xs font-mono">${renderCellContent(cCol3)}</td>
+                        `;
+                        bodies.custom.appendChild(tr);
+                    }
+
+                    // Helper for 2-column boxes
+                    const addTwoColRow = (col1, col2, bodyKey) => {
+                        if (col1.text || col2.text) {
+                            hasData[bodyKey] = true;
+                            const tr = document.createElement('tr');
+                            tr.className = 'data-row border-b border-gray-100 hover:bg-gray-50 transition';
+                            tr.setAttribute('data-search', `${col1.text} ${col2.text}`.toLowerCase());
+                            tr.innerHTML = `
+                                <td class="px-6 py-4 font-mono font-bold text-gray-900">${renderCellContent(col1)}</td>
+                                <td class="px-6 py-4 text-xs font-mono">${renderCellContent(col2)}</td>
+                            `;
+                            bodies[bodyKey].appendChild(tr);
+                        }
+                    };
+
+                    addTwoColRow(p11Col1, p11Col2, 'p11');
+                    addTwoColRow(p13Col1, p13Col2, 'p13');
+                    addTwoColRow(p15Col1, p15Col2, 'p15');
+                    addTwoColRow(p17Col1, p17Col2, 'p17');
+                    addTwoColRow(p19Col1, p19Col2, 'p19');
+                    addTwoColRow(p21Col1, p21Col2, 'p21');
+                });
+
+                // Fallback for empty tables
+                if (!hasData.mersenne) bodies.mersenne.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.custom) bodies.custom.innerHTML = `<tr><td colspan="3" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p11) bodies.p11.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p13) bodies.p13.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p15) bodies.p15.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p17) bodies.p17.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p19) bodies.p19.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+                if (!hasData.p21) bodies.p21.innerHTML = `<tr><td colspan="2" class="px-6 py-4 text-center text-gray-400">No entries found</td></tr>`;
+
+                filterLists();
+            } catch (err) {
+                console.error('Error fetching Google Sheet JSON data:', err);
+            }
+        }
+
+        function filterLists() {
+            const query = document.getElementById('search-input').value.toLowerCase().replace(/,/g, '');
+            const rows = document.querySelectorAll('.data-row');
+            
+            rows.forEach(row => {
+                const searchVal = row.getAttribute('data-search') ? row.getAttribute('data-search').toLowerCase() : '';
+                if (searchVal.includes(query) || query === '') {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+            updateRowCounters();
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchSheetData();
+            setInterval(fetchSheetData, 30000);
+        });
+    </script>
+</body>
+</html>        
+        <!-- Interactive Controls Dashboard -->
+        <div class="bg-white rounded-xl p-4 mb-6 shadow-sm border border-gray-200 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="w-full sm:w-72">
+                <label for="search-input" class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Global Exponent Search</label>
+                <input id="search-input" type="text" placeholder="Type a value or exponent..." onkeyup="filterLists()" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none transition">
+            </div>
+            <div class="text-xs text-gray-500 text-center sm:text-right">
+                <span class="font-medium text-gray-700">Links:</span> Mersennes link to GIMPS, base primes link to certification files.
+            </div>
+        </div>
+
         <!-- 2-Column Responsive Matrix Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
