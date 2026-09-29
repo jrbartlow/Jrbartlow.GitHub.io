@@ -1,0 +1,37 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A300239BEF8
+Created=Sep-29-2026 10:22:18 AM
+TestCount=1
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 15^19 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Running Times (Processes)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/15^19-2.in
+N=$4B1C00C78480BD7E62D
+HexadecimalSize=19
+DecimalSize=23
+BinarySize=75
+
+[1]
+S=$1D72F4
+B=$2
+
+[Signature]
+1=$665751A6120DA1CDCC656B9662FF1ECA3F9CA70087F0D32D
+2=$E8DD64052397FE662D74EE0BB87E3A3E77DBD6CA2538D346
+

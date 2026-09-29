@@ -1,0 +1,40 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A300239BEF8
+Created=Sep-29-2026 10:22:18 AM
+TestCount=1
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 15^17 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.02s
+2ndPhase=0.01s
+Total=0.03s
+
+[Running Times (Processes)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/15^17-2.in
+N=$557531CFAA19DF90D
+HexadecimalSize=17
+DecimalSize=20
+BinarySize=67
+
+[1]
+S=$1E52A8
+W=-$38390B7FA
+A=-$1
+B=0
+T=$5
+
+[Signature]
+1=$8CEEFDE2BF5E9F51D929921AA980A78869586CC2DA8127C2
+2=$3CE54417C27419060AEA414EC3B564F2345028E53368F5C9
+

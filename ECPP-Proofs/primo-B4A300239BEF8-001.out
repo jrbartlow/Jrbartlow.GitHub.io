@@ -1,0 +1,33 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A300239BEF8
+Created=Sep-29-2026 10:22:18 AM
+TestCount=0
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 15^12 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.01s
+2ndPhase=0.00s
+Total=0.01s
+
+[Running Times (Processes)]
+1stPhase=0.01s
+2ndPhase=0.00s
+Total=0.01s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/15^12-2.in
+N=$7600EC61813F
+HexadecimalSize=12
+DecimalSize=15
+BinarySize=47
+
+[Signature]
+1=$6E9F08E3C4DDC9F6A16487EE84CB2C451BB2D0E0D9C3DA62
+2=$938C100D1595CB601C7BAE9171FEB2E784BB0F8BD81D54E8
+

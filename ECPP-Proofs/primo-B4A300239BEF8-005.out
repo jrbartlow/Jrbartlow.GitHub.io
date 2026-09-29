@@ -1,0 +1,84 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A300239BEF8
+Created=Sep-29-2026 10:22:19 AM
+TestCount=10
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 15^65 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.38s
+2ndPhase=0.10s
+Total=0.48s
+
+[Running Times (Processes)]
+1stPhase=0.38s
+2ndPhase=0.10s
+Total=0.48s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/15^65-2.in
+N=$3DBAC1F3F6B4584E9B8290B011E30BF9AE62D483F8E568DB6C7CC92868F1E40D
+HexadecimalSize=64
+DecimalSize=77
+BinarySize=254
+
+[1]
+S=$3559EC
+W=-$905972ED238067105058E3F287AB365E
+A=0
+B=$10
+T=$1
+
+[2]
+S=$870393612ADBA
+Q=$A
+
+[3]
+S=$1A
+Q=$2
+
+[4]
+S=$34C0
+Q=$3
+
+[5]
+S=$4419A
+W=$51A570739327369F6FDEE
+J=$1C73D7C3B924CAE83D4CD0791587493181CF2A742
+T=$1
+
+[6]
+S=$27C
+Q=$2
+
+[7]
+S=$D0C
+Q=$7
+
+[8]
+S=$43364
+B=$2
+
+[9]
+S=$B38A54
+W=$308BF97EDFADA8
+A=-$98
+B=$2D2
+T=$3
+
+[10]
+S=$3F74C1D17
+W=-$2F53704FCEB
+A=0
+B=$D
+T=$2
+
+[Signature]
+1=$90A0F30304D823395C2809CA1CE90B7B8E4E30467F0D0300
+2=$D168AD9378C5AC0AB95B4B124D4A76C2DCD7FA2BAEB3785A
+
