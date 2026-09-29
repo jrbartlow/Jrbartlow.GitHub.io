@@ -1,0 +1,33 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A3001E15BF1
+Created=Sep-29-2026 08:45:46 AM
+TestCount=0
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 21^10 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.02s
+2ndPhase=0.00s
+Total=0.02s
+
+[Running Times (Processes)]
+1stPhase=0.02s
+2ndPhase=0.00s
+Total=0.02s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/21^10-2.in
+N=$F2B96616F17
+HexadecimalSize=11
+DecimalSize=14
+BinarySize=44
+
+[Signature]
+1=$5EE4BDA3C30E8EE4FCFD4C88FB249E392A931DE0162D5663
+2=$DD3800E4F0B6569C5EB629A5A041BBFAC8A2F5FBDCB9B2E8
+

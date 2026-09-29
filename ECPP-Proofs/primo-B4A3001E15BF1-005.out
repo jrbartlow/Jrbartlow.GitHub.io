@@ -1,0 +1,62 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A3001E15BF1
+Created=Sep-29-2026 08:45:46 AM
+TestCount=6
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 21^32 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.08s
+2ndPhase=0.03s
+Total=0.11s
+
+[Running Times (Processes)]
+1stPhase=0.10s
+2ndPhase=0.05s
+Total=0.15s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/21^32-2.in
+N=$177E33A047237DF7D3DD00ED3FC1AF96F97F
+HexadecimalSize=36
+DecimalSize=43
+BinarySize=141
+
+[1]
+S=$58F9
+W=-$5EF0EEC504479614D1
+A=0
+B=-$5DF8CE811C8DF7DF4F7403B4FF06BE5BE60
+T=$3
+
+[2]
+S=$23F1408
+B=$2
+
+[3]
+S=$3B6
+B=$2
+
+[4]
+S=$C
+Q=$A
+
+[5]
+S=$A1A9F
+W=-$11CDAE52C7B
+J=$C9C928E540999DCC61E7C
+T=0
+
+[6]
+S=$72100C14
+B=$2
+
+[Signature]
+1=$CD567E566551C1080A54955A9F39AA966F5FF1FD9D54653C
+2=$0D364B4DD91BD06E77AB08AB874F7C799A356152E7520E9A
+

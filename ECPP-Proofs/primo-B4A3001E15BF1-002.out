@@ -1,0 +1,47 @@
+[PRIMO - Primality Certificate]
+Version=4.3.3 - LX64
+WebSite=https://www.ellipsa.eu/
+Format=4
+ID=B4A3001E15BF1
+Created=Sep-29-2026 08:45:46 AM
+TestCount=2
+Status=Candidate certified prime
+
+[Comments]
+Candidate generated for 21^21 - 2
+
+[Running Times (Wall-Clock)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Running Times (Processes)]
+1stPhase=0.03s
+2ndPhase=0.01s
+Total=0.04s
+
+[Candidate]
+File=/home/jrbartlow/prime_search/21^21-2.in
+N=$12E0DFECE9DA1D2A34567943
+HexadecimalSize=24
+DecimalSize=28
+BinarySize=93
+
+[1]
+S=$4921F
+W=-$89FB27E01BB3
+A=0
+B=$E
+T=$6
+
+[2]
+S=$4DD6DCB
+W=$30B0755C25
+A=0
+B=$25
+T=$3
+
+[Signature]
+1=$7A5C57EB8C7409B0C04D7C9A7DC9A0F08E1D483357CCF411
+2=$4EFDB29F1154B1EF0B950E194418912F6DEDC4FC987BAC7B
+
