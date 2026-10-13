@@ -5,6 +5,7 @@ import time
 import platform
 import subprocess
 import json
+import ast
 from datetime import datetime
 from multiprocessing import Pool, cpu_count, current_process
 
@@ -24,6 +25,16 @@ except ImportError:
     USE_GMP = False
 
 RESERVED_CORES_DEFAULT = 2
+
+
+def safe_eval_expr(expr_str):
+    """Safely evaluates basic arithmetic expressions without arbitrary code execution risk."""
+    tree = ast.parse(expr_str, mode='eval')
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Constant,
+                                ast.Add, ast.Sub, ast.Mult, ast.Pow, ast.Div, ast.USub, ast.UAdd)):
+            raise ValueError(f"Unsupported math operation or syntax in expression: {ast.dump(node)}")
+    return eval(compile(tree, filename='', mode='eval'))
 
 
 def get_hardware_info():
@@ -179,11 +190,12 @@ def load_recovery_ledger(recovery_file):
     try:
         with open(recovery_file, "r") as rf:
             data = json.load(rf)
-        if "verified_indices" in data:
-            return set(data["verified_indices"])
-        if "verified_bases_count" in data:
-            # Legacy serial-script ledger format.
-            return set(range(data["verified_bases_count"]))
+        if isinstance(data, dict):
+            if "verified_indices" in data:
+                return set(data["verified_indices"])
+            if "verified_bases_count" in data:
+                # Legacy serial-script ledger format.
+                return set(range(data["verified_bases_count"]))
     except Exception as e:
         print(f"   [-] Warning reading recovery file (Starting fresh): {e}")
     return set()
@@ -232,7 +244,7 @@ def verify_certificate(cert_filename):
 
     print(f"[1/3] Parsing verification target expressions...")
     try:
-        n = eval(expression)
+        n = safe_eval_expr(expression)
     except Exception as e:
         print(f"[-] Error evaluating expression: {e}")
         return
@@ -274,7 +286,6 @@ def verify_certificate(cert_filename):
     start_calc_time = time.perf_counter()
     completed_this_session = 0
     total_this_session = len(remaining_work)
-    ledger_write_interval = 10  # base results between ledger flushes
 
     if total_this_session == 0:
         print("   [+] All bases already verified per recovery ledger - nothing left to do.")
@@ -294,14 +305,14 @@ def verify_certificate(cert_filename):
 
                 verified_indices.add(idx)
 
-                if completed_this_session % ledger_write_interval == 0:
-                    save_recovery_ledger(recovery_file, verified_indices)
-
+                # Back up progress every 10 iterations and output progress with timestamp and ETR
                 if completed_this_session % 10 == 0 or completed_this_session == total_this_session:
+                    save_recovery_ledger(recovery_file, verified_indices)
                     elapsed = time.perf_counter() - start_calc_time
                     avg_time = elapsed / completed_this_session
                     remaining_iters = total_this_session - completed_this_session
-                    print(f"   -> Progress: {len(verified_indices)}/{k_total} bases verified. "
+                    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print(f"   -> [{timestamp}] Progress: {len(verified_indices)}/{k_total} bases verified. "
                           f"[Ave. {avg_time:.3f} sec/base | ETR: {format_etr(remaining_iters * avg_time)}]")
 
         # Persist final state either way - lets a subsequent run resume past

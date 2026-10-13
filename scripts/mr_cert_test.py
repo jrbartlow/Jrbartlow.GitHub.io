@@ -3,6 +3,8 @@ import os
 import math
 import platform
 import time
+import json
+import ast
 from datetime import datetime
 import secrets
 from multiprocessing import Pool, cpu_count, current_process
@@ -10,9 +12,6 @@ from multiprocessing import Pool, cpu_count, current_process
 if hasattr(sys, 'set_int_max_str_digits'):
     sys.set_int_max_str_digits(0)
 
-# Some Python/OS combinations re-execute this module's top-level code once per
-# worker process when the Pool starts (e.g. under the "spawn" start method).
-# Gate the startup banner to the main process only so it doesn't get reprinted.
 _IS_MAIN_PROCESS = current_process().name == 'MainProcess'
 
 try:
@@ -38,33 +37,38 @@ FIRST_200_PRIMES = [
     1129, 1151, 1153, 1163, 1171, 1181, 1187, 1193, 1201, 1213, 1217, 1223
 ]
 
-# Config: how many rounds per stage.
 K1_DEFAULT = 100
 K2_DEFAULT = 100
-
-# How many logical cores to leave free for other work on the machine by default.
-# Change this if you want a different default headroom.
 RESERVED_CORES_DEFAULT = 2
+BACKUP_FILE = "mr_checkpoint.json"
+
+
+def safe_eval_expr(expr_str):
+    """Safely evaluates basic arithmetic expressions without arbitrary code execution risk."""
+    tree = ast.parse(expr_str, mode='eval')
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Constant,
+                                ast.Add, ast.Sub, ast.Mult, ast.Pow, ast.Div, ast.USub, ast.UAdd)):
+            raise ValueError(f"Unsupported math operation or syntax in expression: {ast.dump(node)}")
+    return eval(compile(tree, filename='', mode='eval'))
+
+
+def get_next_prime(current_p):
+    """Fallback prime generator if k1 > 200."""
+    p = current_p + 1
+    while True:
+        if gmpy2.is_prime(p):
+            return p
+        p += 1
 
 
 def get_available_core_count():
-    """
-    Number of logical cores this process could actually use.
-    Prefers sched_getaffinity (respects taskset/cgroup CPU pinning, e.g. if you've
-    already restricted this shell or a container to a subset of cores) and falls
-    back to the total system core count if that's not available (e.g. on Windows/macOS).
-    """
     if hasattr(os, "sched_getaffinity"):
         return len(os.sched_getaffinity(0))
     return cpu_count()
 
 
 def choose_worker_count():
-    """
-    Figure out how many worker processes to use, defaulting to something that
-    leaves headroom for other workloads on the machine, and let the user
-    override it interactively.
-    """
     total_available = get_available_core_count()
     suggested = max(1, total_available - RESERVED_CORES_DEFAULT)
 
@@ -134,8 +138,32 @@ def format_etr(seconds_remaining):
     return f"{hours}h {minutes}m"
 
 
-# ---- Worker: runs in a separate process. Must be top-level (picklable) and
-# must re-import gmpy2 itself, since mpz objects don't cross process boundaries.
+def save_checkpoint(state):
+    """Saves process state to a JSON file."""
+    with open(BACKUP_FILE, "w", encoding="utf-8") as f:
+        json.dump(state, f, indent=4)
+
+
+def load_checkpoint():
+    """Loads state if a valid checkpoint exists."""
+    if os.path.exists(BACKUP_FILE):
+        try:
+            with open(BACKUP_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"[!] Checkpoint exists but could not be read: {e}")
+    return None
+
+
+def clear_checkpoint():
+    """Deletes checkpoint on successful run completion."""
+    if os.path.exists(BACKUP_FILE):
+        try:
+            os.remove(BACKUP_FILE)
+        except Exception:
+            pass
+
+
 def _mr_round_worker(args):
     a_int, n_str, d_str, s = args
     import gmpy2 as g
@@ -154,13 +182,24 @@ def _mr_round_worker(args):
     return (a_int, False)
 
 
-def generate_bases(stage_mode, k_iterations, n, global_used_set):
-    bases = []
+def generate_bases(stage_mode, k_iterations, n, global_used_set, existing_bases=None):
+    bases = list(existing_bases) if existing_bases else []
+    for b in bases:
+        global_used_set.add(b)
+
+    last_prime = FIRST_200_PRIMES[-1] if len(bases) >= len(FIRST_200_PRIMES) else 2
+
     while len(bases) < k_iterations:
         if stage_mode == "primes":
-            a_int = FIRST_200_PRIMES[len(bases)]
+            idx = len(bases)
+            if idx < len(FIRST_200_PRIMES):
+                a_int = FIRST_200_PRIMES[idx]
+            else:
+                last_prime = get_next_prime(last_prime)
+                a_int = last_prime
         else:
             a_int = secrets.randbits(64)
+
         if a_int in global_used_set or a_int >= n:
             continue
         global_used_set.add(a_int)
@@ -169,33 +208,67 @@ def generate_bases(stage_mode, k_iterations, n, global_used_set):
 
 
 def run_single_mr_test_parallel(n, stage_mode, k_iterations, d, s, stage_name,
-                                 global_used_set, pool, n_str, d_str):
-    bases = generate_bases(stage_mode, k_iterations, n, global_used_set)
+                                 global_used_set, pool, n_str, d_str, checkpoint_data,
+                                 expr_clean, k1, k2):
+    resumed_stage = checkpoint_data is not None and checkpoint_data.get("current_stage") == stage_name
+    stage_key = "stage1_bases" if stage_name == "Stage 1" else "stage2_bases"
+    already_completed_bases = checkpoint_data.get(stage_key, []) if resumed_stage else []
+    already_passed_count = len(already_completed_bases)
+
+    bases = generate_bases(stage_mode, k_iterations, n, global_used_set, existing_bases=already_completed_bases)
 
     start_stage_time = time.perf_counter()
-    completed = 0
+    completed = already_passed_count
     all_passed = True
-    witness = None
 
-    work_items = [(a, n_str, d_str, s) for a in bases]
+    remaining_bases = bases[already_passed_count:]
+    work_items = [(a, n_str, d_str, s) for a in remaining_bases]
+    completed_bases = list(already_completed_bases)
 
-    # imap_unordered lets us print progress as results land, same spirit as
-    # the original's incremental progress lines, without waiting for the
-    # slowest worker to hold up the printout.
+    if completed > 0:
+        print(f"   [+] Resuming {stage_name} from checkpoint at {completed}/{k_iterations} iterations.")
+
     for a_int, passed in pool.imap_unordered(_mr_round_worker, work_items):
         completed += 1
+        completed_bases.append(a_int)
+
         if not passed:
             all_passed = False
-            witness = a_int
-            # Don't break early: workers already dispatched will keep running,
-            # but we stop waiting on new progress prints once we know it's composite.
 
-        if completed % 10 == 0 or completed == k_iterations:
+        if completed % 10 == 0 or completed == k_iterations or not all_passed:
             elapsed = time.perf_counter() - start_stage_time
-            avg_time = elapsed / completed
+            new_iters = completed - already_passed_count
+            avg_time = (elapsed / new_iters) if new_iters > 0 else 0
             remaining_iters = k_iterations - completed
-            print(f"   -> {stage_name}: {completed}/{k_iterations} iterations complete. "
-                  f"[Ave. {avg_time:.4f} sec/iter | ETR: {format_etr(remaining_iters * avg_time)}]")
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            print(f"   -> [{timestamp}] {stage_name}: {completed}/{k_iterations} iterations complete. "
+                  f"[Avg. {avg_time:.4f} sec/iter | ETR: {format_etr(remaining_iters * avg_time)}]")
+
+            state = {
+                "expr_clean": expr_clean,
+                "current_stage": stage_name,
+                "k1": k1,
+                "k2": k2,
+                "stage1_complete": checkpoint_data.get("stage1_complete", False) if checkpoint_data else False,
+                "stage1_passed": checkpoint_data.get("stage1_passed", True) if checkpoint_data else True,
+                "stage1_bases": checkpoint_data.get("stage1_bases", []) if checkpoint_data else [],
+                "start1": checkpoint_data.get("start1") if checkpoint_data else None,
+                "end1": checkpoint_data.get("end1") if checkpoint_data else None,
+                "stage2_complete": False,
+                "stage2_passed": all_passed,
+                "stage2_bases": completed_bases if stage_name == "Stage 2" else [],
+                "start2": checkpoint_data.get("start2") if checkpoint_data else None,
+                "end2": checkpoint_data.get("end2") if checkpoint_data else None
+            }
+            if stage_name == "Stage 1":
+                state["stage1_bases"] = completed_bases
+                state["stage1_passed"] = all_passed
+
+            save_checkpoint(state)
+
+        if not all_passed:
+            break
 
     return all_passed, bases
 
@@ -208,19 +281,32 @@ def main():
         print("[!] WARNING: Running without gmpy2 - this script requires it for the worker processes.")
         sys.exit(1)
 
+    checkpoint = load_checkpoint()
+
+    if checkpoint:
+        print(f"\n[!] Found saved checkpoint for expression: '{checkpoint['expr_clean']}'")
+        res = input("    Resume previous session? [Y/n]: ").strip().lower()
+        if res not in ('', 'y', 'yes'):
+            checkpoint = None
+            clear_checkpoint()
+
+    if checkpoint:
+        expr_clean = checkpoint['expr_clean']
+        print(f"Resuming computation for expression: {expr_clean}")
+    else:
+        expr_input = input("Enter expression to test (e.g., 7**20176 - 2):\n> ")
+        expr_clean = expr_input.strip()
+
     n_workers = choose_worker_count()
     print(f"[!] Using {n_workers} worker process(es) for modexp rounds.\n")
 
-    expr_input = input("Enter expression to test (e.g., 7**20176 - 2):\n> ")
-    expr_clean = expr_input.strip()
-
     print("\nEvaluating expression...")
-    n = eval(expr_clean)
-    k1, k2 = K1_DEFAULT, K2_DEFAULT
+    n = safe_eval_expr(expr_clean)
+    k1 = checkpoint['k1'] if checkpoint else K1_DEFAULT
+    k2 = checkpoint['k2'] if checkpoint else K2_DEFAULT
     k_total = k1 + k2
 
     fn_expr = expr_clean.replace("**", "^").replace(" ", "")
-
     digit_length = int(gmpy2.log10(gmpy2.mpz(n))) + 1
 
     print(f"\n[1/4] Gathering system info...")
@@ -232,43 +318,81 @@ def main():
         d //= 2
         s += 1
 
-    # n and d are passed to workers as strings (via mpz round-trip on the
-    # worker side) since raw huge Python ints pickle fine but this keeps the
-    # IPC payload format explicit and avoids relying on fork semantics.
     n_str = str(n)
     d_str = str(d)
-
     global_used_set = set()
 
-    # Lower this process's (and its workers') scheduling priority so the OS
-    # favors your other running work when both want the CPU at the same time.
-    # Workers inherit niceness from the parent on fork, so setting it once
-    # here before the Pool starts covers all of them. Windows has no os.nice.
     if hasattr(os, "nice"):
         try:
             os.nice(10)
         except Exception:
             pass
 
-    with Pool(processes=n_workers) as pool:
-        print(f"[3/4] Launching Test Run 1 (First {k1} consecutive primes) across {n_workers} workers...")
-        start1 = datetime.now()
-        prime1, bases1 = run_single_mr_test_parallel(
-            n, "primes", k1, d, s, "Stage 1", global_used_set, pool, n_str, d_str)
-        end1 = datetime.now()
+    start1_str = checkpoint.get("start1") if checkpoint else None
+    end1_str = checkpoint.get("end1") if checkpoint else None
+    start2_str = checkpoint.get("start2") if checkpoint else None
+    end2_str = checkpoint.get("end2") if checkpoint else None
 
+    with Pool(processes=n_workers) as pool:
+        # Stage 1 Execution
+        if checkpoint and checkpoint.get("stage1_complete"):
+            print(f"[3/4] Skipping Stage 1 (already completed in checkpoint).")
+            prime1 = checkpoint["stage1_passed"]
+            bases1 = checkpoint["stage1_bases"]
+        else:
+            print(f"[3/4] Launching Test Run 1 (First {k1} consecutive primes) across {n_workers} workers...")
+            start1_dt = datetime.now()
+            start1_str = start1_dt.isoformat()
+            prime1, bases1 = run_single_mr_test_parallel(
+                n, "primes", k1, d, s, "Stage 1", global_used_set, pool, n_str, d_str,
+                checkpoint, expr_clean, k1, k2)
+            end1_dt = datetime.now()
+            end1_str = end1_dt.isoformat()
+
+            checkpoint_state = {
+                "expr_clean": expr_clean,
+                "current_stage": "Stage 1",
+                "k1": k1, "k2": k2,
+                "stage1_complete": True,
+                "stage1_passed": prime1,
+                "stage1_bases": bases1,
+                "start1": start1_str, "end1": end1_str,
+                "stage2_complete": False,
+                "stage2_passed": True,
+                "stage2_bases": [],
+                "start2": None, "end2": None
+            }
+            save_checkpoint(checkpoint_state)
+            checkpoint = checkpoint_state
+
+        # Stage 2 Execution
         if not prime1:
             final_verdict = "DEFINITIVELY COMPOSITE"
             prime2, bases2 = False, []
-            start2 = end2 = datetime.now()
+            start2_str = end2_str = datetime.now().isoformat()
             print(f"\n[RESULT] Stage 1 found a witness proving compositeness - skipping Stage 2.")
         else:
-            print(f"[4/4] Launching Test Run 2 ({k2} random 64-bit bases) across {n_workers} workers...")
-            start2 = datetime.now()
-            prime2, bases2 = run_single_mr_test_parallel(
-                n, "random", k2, d, s, "Stage 2", global_used_set, pool, n_str, d_str)
-            end2 = datetime.now()
+            if checkpoint and checkpoint.get("stage2_complete"):
+                print(f"[4/4] Skipping Stage 2 (already completed in checkpoint).")
+                prime2 = checkpoint["stage2_passed"]
+                bases2 = checkpoint["stage2_bases"]
+            else:
+                print(f"[4/4] Launching Test Run 2 ({k2} random 64-bit bases) across {n_workers} workers...")
+                start2_dt = datetime.now()
+                start2_str = start2_dt.isoformat()
+                prime2, bases2 = run_single_mr_test_parallel(
+                    n, "random", k2, d, s, "Stage 2", global_used_set, pool, n_str, d_str,
+                    checkpoint, expr_clean, k1, k2)
+                end2_dt = datetime.now()
+                end2_str = end2_dt.isoformat()
+
             final_verdict = "PROBABLE PRIME (PRP)" if prime2 else "DEFINITIVELY COMPOSITE"
+
+    # Convert timestamps safely back to datetime for formatting
+    start1 = datetime.fromisoformat(start1_str) if start1_str else datetime.now()
+    end1 = datetime.fromisoformat(end1_str) if end1_str else datetime.now()
+    start2 = datetime.fromisoformat(start2_str) if start2_str else datetime.now()
+    end2 = datetime.fromisoformat(end2_str) if end2_str else datetime.now()
 
     print(f"\n{'=' * 60}")
     print(f"  VERDICT: {final_verdict}")
@@ -316,6 +440,7 @@ def main():
         for index, b in enumerate(bases2, 1):
             f.write(f"Base 2.{index:03d}: {b}\n")
 
+    clear_checkpoint()
     print(f"\nDone! Certificate record generated: '{cert_filename}'")
 
 
